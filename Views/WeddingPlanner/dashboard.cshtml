@@ -1,0 +1,41 @@
+@model Dashboard
+
+<h1>Welcome to Wedding Planner <a href="/logout">Log Out</a></h1>
+<table class="table table-dark">
+    <thead>
+        <tr>
+        <th scope="col">Wedding</th>
+        <th scope="col">Date</th>
+        <th scope="col">Guest</th>
+        <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            @foreach(var x in @Model.Weddings)
+            {
+                <tr>
+                    <th scope="row"><a href="/info/@x.WeddingId">@x.WedderOne & @x.WedderTwo</a></th>
+                    <td>@x.Date</td>
+                    <td>@x.Guest.Count</td>
+                    @if(x.UserId == @Model.User.UserId)
+                    {
+                        <td><a href="/deletewed/@x.WeddingId"><input type="button" value="Delete"></a></td>
+                    }
+                    else
+                    {   
+                        @if(@Model.Guests.Any(u => u.UserId == @Model.User.UserId))
+                        {
+                            <td><a href="/removeguest/@Model.User.UserId/@x.WeddingId">UN-RSVP</a></td>
+                        }
+                        else
+                        {
+                            <td><a href="/addguest/@Model.User.UserId/@x.WeddingId">RSVP</a></td> 
+                        }
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<a href="/newWedding"><input type="button" value="New Wedding"></a>
